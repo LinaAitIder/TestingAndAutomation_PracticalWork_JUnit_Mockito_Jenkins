@@ -1,5 +1,9 @@
 # TP1_Exo4_JaCoCo - Intégration de la Couverture de Code avec JaCoCo
 
+## Résultat 
+
+<img width="1554" height="309" alt="Image" src="https://github.com/user-attachments/assets/463af4b7-3d3e-4f6a-9dad-4765823911ed" />
+
 ## I. Configuration de JaCoCo
 
 ### 1. Comment intégrer JaCoCo dans votre projet Maven/Gradle pour mesurer la couverture de code ?
