@@ -1,0 +1,122 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven-3.9.5'
+        jdk 'JDK-17'
+    }
+
+    environment {
+        SONARQUBE_URL = 'http://localhost:9000'
+        SONARQUBE_TOKEN = credentials('sonarqube-token')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/LinaAitIder/TestingAndAutomation_PracticalWork_JUnit_Mockito_Jenkins/TP3_Jenkins_Pipeline.git'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+            post {
+                success {
+                    echo 'Compilation successful!'
+                }
+                failure {
+                    error 'Compilation failed!'
+                }
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                    publishCoverage adapters: [jacocoAdapter('target/jacoco.exec')]
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/site/jacoco',
+                        reportFiles: 'index.html',
+                        reportName: 'JaCoCo Coverage Report'
+                    ])
+                }
+            }
+        }
+
+        stage('Static Code Analysis') {
+            steps {
+                sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=library-management-system \
+                    -Dsonar.sources=src/main \
+                    -Dsonar.tests=src/test \
+                    -Dsonar.java.binaries=target/classes \
+                    -Dsonar.java.test.binaries=target/test-classes \
+                    -Dsonar.junit.reportsPath=target/surefire-reports \
+                    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                '''
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package -DskipTests'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                }
+            }
+        }
+
+        stage('Deploy to Dev') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'echo "Deploying to development environment..."'
+            }
+        }
+    }
+
+    post {
+        always {
+            deleteDir()
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+            emailext (
+                subject: "SUCCESS: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+                body: """
+                    <p>The pipeline build was successful.</p>
+                    <p>Job Name: ${env.JOB_NAME}</p>
+                    <p>Build Number: ${env.BUILD_NUMBER}</p>
+                    <p>URL: ${env.BUILD_URL}</p>
+                """,
+                to: 'linaitider@example.com'
+            )
+        }
+        failure {
+            echo 'Pipeline failed!'
+            emailext (
+                subject: "FAILED: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+                body: """
+                    <p>The pipeline build has failed.</p>
+                    <p>Job Name: ${env.JOB_NAME}</p>
+                    <p>Build Number: ${env.BUILD_NUMBER}</p>
+                    <p>URL: ${env.BUILD_URL}</p>
+                """,
+                to: 'linaitider@example.com'
+            )
+        }
+    }
+}

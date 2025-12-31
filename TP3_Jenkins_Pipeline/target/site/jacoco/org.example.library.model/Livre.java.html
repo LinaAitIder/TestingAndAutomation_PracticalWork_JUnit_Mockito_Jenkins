@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Livre.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Library Management System</a> &gt; <a href="index.source.html" class="el_package">org.example.library.model</a> &gt; <span class="el_source">Livre.java</span></div><h1>Livre.java</h1><pre class="source lang-java linenums">package org.example.library.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+@Entity
+public class Livre {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @NotBlank(message = &quot;Le titre est requis&quot;)
+    private String titre;
+    
+    @NotBlank(message = &quot;L'auteur est requis&quot;)
+    private String auteur;
+    
+    @NotBlank(message = &quot;L'ISBN est requis&quot;)
+    private String isbn;
+    
+    @NotNull
+    private Boolean disponible;
+    
+<span class="nc" id="L28">    public Livre() {</span>
+<span class="nc" id="L29">        this.disponible = true;</span>
+<span class="nc" id="L30">    }</span>
+    
+<span class="fc" id="L32">    public Livre(String titre, String auteur, String isbn) {</span>
+<span class="fc" id="L33">        this.titre = titre;</span>
+<span class="fc" id="L34">        this.auteur = auteur;</span>
+<span class="fc" id="L35">        this.isbn = isbn;</span>
+<span class="fc" id="L36">        this.disponible = true;</span>
+<span class="fc" id="L37">    }</span>
+    
+    // Getters and Setters
+    public Long getId() {
+<span class="nc" id="L41">        return id;</span>
+    }
+    
+    public void setId(Long id) {
+<span class="fc" id="L45">        this.id = id;</span>
+<span class="fc" id="L46">    }</span>
+    
+    public String getTitre() {
+<span class="fc" id="L49">        return titre;</span>
+    }
+    
+    public void setTitre(String titre) {
+<span class="fc" id="L53">        this.titre = titre;</span>
+<span class="fc" id="L54">    }</span>
+    
+    public String getAuteur() {
+<span class="fc" id="L57">        return auteur;</span>
+    }
+    
+    public void setAuteur(String auteur) {
+<span class="fc" id="L61">        this.auteur = auteur;</span>
+<span class="fc" id="L62">    }</span>
+    
+    public String getIsbn() {
+<span class="fc" id="L65">        return isbn;</span>
+    }
+    
+    public void setIsbn(String isbn) {
+<span class="fc" id="L69">        this.isbn = isbn;</span>
+<span class="fc" id="L70">    }</span>
+    
+    public Boolean getDisponible() {
+<span class="fc" id="L73">        return disponible;</span>
+    }
+    
+    public void setDisponible(Boolean disponible) {
+<span class="fc" id="L77">        this.disponible = disponible;</span>
+<span class="fc" id="L78">    }</span>
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L82">        return &quot;Livre{&quot; +</span>
+                &quot;id=&quot; + id +
+                &quot;, titre='&quot; + titre + '\'' +
+                &quot;, auteur='&quot; + auteur + '\'' +
+                &quot;, isbn='&quot; + isbn + '\'' +
+                &quot;, disponible=&quot; + disponible +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

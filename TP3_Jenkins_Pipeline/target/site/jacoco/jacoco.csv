@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Library Management System,org.example.library.service,LivreService,5,106,4,6,2,27,5,8,1,7
+Library Management System,org.example.library.controller,LivreController,68,0,2,0,18,0,9,0,8,0
+Library Management System,org.example.library.model,Livre,22,48,0,0,5,20,3,10,3,10
+Library Management System,org.example.library,LibraryManagementApplication,8,0,0,0,3,0,2,0,2,0

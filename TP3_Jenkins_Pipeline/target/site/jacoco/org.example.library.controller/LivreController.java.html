@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LivreController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Library Management System</a> &gt; <a href="index.source.html" class="el_package">org.example.library.controller</a> &gt; <span class="el_source">LivreController.java</span></div><h1>LivreController.java</h1><pre class="source lang-java linenums">package org.example.library.controller;
+
+import org.example.library.model.Livre;
+import org.example.library.service.LivreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping(&quot;/api/livres&quot;)
+<span class="nc" id="L15">public class LivreController {</span>
+    
+    @Autowired
+    private LivreService livreService;
+    
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Livre&gt;&gt; getAllLivres() {
+<span class="nc" id="L22">        List&lt;Livre&gt; livres = livreService.getAllLivres();</span>
+<span class="nc" id="L23">        return ResponseEntity.ok(livres);</span>
+    }
+    
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Livre&gt; getLivreById(@PathVariable Long id) {
+<span class="nc" id="L28">        Optional&lt;Livre&gt; livre = livreService.getLivreById(id);</span>
+<span class="nc" id="L29">        return livre.map(ResponseEntity::ok)</span>
+<span class="nc" id="L30">                   .orElse(ResponseEntity.notFound().build());</span>
+    }
+    
+    @PostMapping
+    public ResponseEntity&lt;Livre&gt; createLivre(@RequestBody Livre livre) {
+<span class="nc" id="L35">        Livre savedLivre = livreService.addLivre(livre);</span>
+<span class="nc" id="L36">        return ResponseEntity.status(HttpStatus.CREATED).body(savedLivre);</span>
+    }
+    
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Livre&gt; updateLivre(@PathVariable Long id, @RequestBody Livre livreDetails) {
+<span class="nc" id="L41">        Livre updatedLivre = livreService.updateLivre(id, livreDetails);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (updatedLivre != null) {</span>
+<span class="nc" id="L43">            return ResponseEntity.ok(updatedLivre);</span>
+        } else {
+<span class="nc" id="L45">            return ResponseEntity.notFound().build();</span>
+        }
+    }
+    
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteLivre(@PathVariable Long id) {
+<span class="nc" id="L51">        livreService.deleteLivre(id);</span>
+<span class="nc" id="L52">        return ResponseEntity.noContent().build();</span>
+    }
+    
+    @PutMapping(&quot;/{id}/emprunter&quot;)
+    public ResponseEntity&lt;Void&gt; emprunterLivre(@PathVariable Long id) {
+<span class="nc" id="L57">        livreService.emprunterLivre(id);</span>
+<span class="nc" id="L58">        return ResponseEntity.ok().build();</span>
+    }
+    
+    @PutMapping(&quot;/{id}/retourner&quot;)
+    public ResponseEntity&lt;Void&gt; retournerLivre(@PathVariable Long id) {
+<span class="nc" id="L63">        livreService.retournerLivre(id);</span>
+<span class="nc" id="L64">        return ResponseEntity.ok().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

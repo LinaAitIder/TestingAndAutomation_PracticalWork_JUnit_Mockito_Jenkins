@@ -1,0 +1,5 @@
+org\example\library\model\Livre.class
+org\example\library\LibraryManagementApplication.class
+org\example\library\repository\LivreRepository.class
+org\example\library\service\LivreService.class
+org\example\library\controller\LivreController.class
