@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Default'
-        jdk 'JDK-17'
-    }
-
     environment {
         SONARQUBE_URL = 'http://localhost:9000'
         SONARQUBE_TOKEN = credentials('sonarqube-token')
@@ -14,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/LinaAitIder/TestingAndAutomation_PracticalWork_JUnit_Mockito_Jenkins/TP3_Jenkins_Pipeline.git'
+                git branch: 'master', url: 'https://github.com/LinaAitIder/TestingAndAutomation_PracticalWork_JUnit_Mockito_Jenkins.git'
             }
         }
 
