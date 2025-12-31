@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Livre.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TP1_Exo4_JaCoCo</a> &gt; <a href="index.source.html" class="el_package">org.example</a> &gt; <span class="el_source">Livre.java</span></div><h1>Livre.java</h1><pre class="source lang-java linenums">package org.example;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+class Livre {
+    private String titre;
+    private String auteur;
+    private LocalDate datePublication;
+    private String isbn;
+
+<span class="fc" id="L13">    public Livre(String titre, String auteur, int anneePublication, String isbn) {</span>
+        // Validation de l'année avant de créer la date
+<span class="fc bfc" id="L15" title="All 4 branches covered.">        if (anneePublication &lt; 1000 || anneePublication &gt; LocalDate.now().getYear()) {</span>
+<span class="fc" id="L16">            throw new IllegalArgumentException(&quot;L'année de publication doit être comprise entre 1000 et l'année actuelle&quot;);</span>
+        }
+        
+<span class="pc bpc" id="L19" title="1 of 4 branches missed.">        if (titre == null || titre.trim().isEmpty()) {</span>
+<span class="fc" id="L20">            throw new IllegalArgumentException(&quot;Le titre ne peut pas être vide&quot;);</span>
+        }
+<span class="pc bpc" id="L22" title="1 of 4 branches missed.">        if (auteur == null || auteur.trim().isEmpty()) {</span>
+<span class="fc" id="L23">            throw new IllegalArgumentException(&quot;L'auteur ne peut pas être vide&quot;);</span>
+        }
+<span class="pc bpc" id="L25" title="1 of 4 branches missed.">        if (isbn == null || isbn.trim().isEmpty()) {</span>
+<span class="fc" id="L26">            throw new IllegalArgumentException(&quot;L'ISBN ne peut pas être vide&quot;);</span>
+        }
+        
+<span class="fc" id="L29">        this.titre = titre;</span>
+<span class="fc" id="L30">        this.auteur = auteur;</span>
+<span class="fc" id="L31">        this.datePublication = LocalDate.of(anneePublication, 1, 1); // Par défaut au 1er janvier</span>
+<span class="fc" id="L32">        this.isbn = isbn;</span>
+<span class="fc" id="L33">    }</span>
+    
+<span class="fc" id="L35">    public Livre(String titre, String auteur, LocalDate datePublication, String isbn) {</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (datePublication == null) {</span>
+<span class="nc" id="L37">            throw new IllegalArgumentException(&quot;La date de publication ne peut pas être nulle&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (isDateNotReasonable(datePublication)) {</span>
+<span class="fc" id="L41">            throw new IllegalArgumentException(&quot;La date de publication doit être comprise entre l'an 1000 et la date actuelle&quot;);</span>
+        }
+        
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (titre == null || titre.trim().isEmpty()) {</span>
+<span class="nc" id="L45">            throw new IllegalArgumentException(&quot;Le titre ne peut pas être vide&quot;);</span>
+        }
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">        if (auteur == null || auteur.trim().isEmpty()) {</span>
+<span class="nc" id="L48">            throw new IllegalArgumentException(&quot;L'auteur ne peut pas être vide&quot;);</span>
+        }
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        if (isbn == null || isbn.trim().isEmpty()) {</span>
+<span class="nc" id="L51">            throw new IllegalArgumentException(&quot;L'ISBN ne peut pas être vide&quot;);</span>
+        }
+        
+<span class="fc" id="L54">        this.titre = titre;</span>
+<span class="fc" id="L55">        this.auteur = auteur;</span>
+<span class="fc" id="L56">        this.datePublication = datePublication;</span>
+<span class="fc" id="L57">        this.isbn = isbn;</span>
+<span class="fc" id="L58">    }</span>
+
+<span class="nc" id="L60">    public Livre() {</span>
+<span class="nc" id="L61">        this.titre = &quot;&quot;;</span>
+<span class="nc" id="L62">        this.auteur = &quot;&quot;;</span>
+<span class="nc" id="L63">        this.datePublication = LocalDate.now();</span>
+<span class="nc" id="L64">        this.isbn = &quot;&quot;;</span>
+<span class="nc" id="L65">    }</span>
+
+    // Getters et Setters
+
+    public String getTitre() {
+<span class="fc" id="L70">        return titre;</span>
+    }
+
+    public String getAuteur() {
+<span class="fc" id="L74">        return auteur;</span>
+    }
+
+    public int getAnneePublication() {
+<span class="fc" id="L78">        return datePublication.getYear();</span>
+    }
+    
+    public LocalDate getDatePublication() {
+<span class="fc" id="L82">        return datePublication;</span>
+    }
+
+    public String getIsbn() {
+<span class="fc" id="L86">        return isbn;</span>
+    }
+
+    public void setTitre(String titre) {
+<span class="pc bpc" id="L90" title="1 of 4 branches missed.">        if (titre == null || titre.trim().isEmpty()) {</span>
+<span class="fc" id="L91">            throw new IllegalArgumentException(&quot;Le titre ne peut pas être vide&quot;);</span>
+        }
+<span class="fc" id="L93">        this.titre = titre;</span>
+<span class="fc" id="L94">    }</span>
+    public void setAuteur(String auteur) {
+<span class="pc bpc" id="L96" title="1 of 4 branches missed.">        if (auteur == null || auteur.trim().isEmpty()) {</span>
+<span class="fc" id="L97">            throw new IllegalArgumentException(&quot;L'auteur ne peut pas être vide&quot;);</span>
+        }
+<span class="fc" id="L99">        this.auteur = auteur;</span>
+<span class="fc" id="L100">    }</span>
+    public void setAnneePublication(int anneePublication) {
+<span class="pc bpc" id="L102" title="1 of 4 branches missed.">        if (anneePublication &lt; 1000 || anneePublication &gt; LocalDate.now().getYear()) {</span>
+<span class="fc" id="L103">            throw new IllegalArgumentException(&quot;L'année de publication doit être comprise entre 1000 et l'année actuelle&quot;);</span>
+        }
+<span class="fc" id="L105">        this.datePublication = LocalDate.of(anneePublication, 1, 1); // Par défaut au 1er janvier</span>
+<span class="fc" id="L106">    }</span>
+    
+    public void setDatePublication(LocalDate datePublication) {
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (datePublication == null) {</span>
+<span class="fc" id="L110">            throw new IllegalArgumentException(&quot;La date de publication ne peut pas être nulle&quot;);</span>
+        }
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (isDateNotReasonable(datePublication)) {</span>
+<span class="nc" id="L113">            throw new IllegalArgumentException(&quot;La date de publication doit être comprise entre l'an 1000 et la date actuelle&quot;);</span>
+        }
+<span class="fc" id="L115">        this.datePublication = datePublication;</span>
+<span class="fc" id="L116">    }</span>
+    public void setIsbn(String isbn) {
+<span class="pc bpc" id="L118" title="1 of 4 branches missed.">        if (isbn == null || isbn.trim().isEmpty()) {</span>
+<span class="fc" id="L119">            throw new IllegalArgumentException(&quot;L'ISBN ne peut pas être vide&quot;);</span>
+        }
+<span class="fc" id="L121">        this.isbn = isbn;</span>
+<span class="fc" id="L122">    }</span>
+    
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (this == obj) return true;</span>
+<span class="pc bpc" id="L127" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) return false;</span>
+        
+<span class="fc" id="L129">        Livre livre = (Livre) obj;</span>
+        
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (!datePublication.equals(livre.datePublication)) return false;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (!titre.equals(livre.titre)) return false;</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (!auteur.equals(livre.auteur)) return false;</span>
+<span class="fc" id="L134">        return isbn.equals(livre.isbn);</span>
+    }
+    
+    @Override
+    public int hashCode() {
+<span class="fc" id="L139">        int result = titre.hashCode();</span>
+<span class="fc" id="L140">        result = 31 * result + auteur.hashCode();</span>
+<span class="fc" id="L141">        result = 31 * result + datePublication.hashCode();</span>
+<span class="fc" id="L142">        result = 31 * result + isbn.hashCode();</span>
+<span class="fc" id="L143">        return result;</span>
+    }
+    
+    @Override
+    public String toString() {
+<span class="fc" id="L148">        return &quot;Livre{&quot; +</span>
+                &quot;titre='&quot; + titre + '\'' +
+                &quot;, auteur='&quot; + auteur + '\'' +
+                &quot;, datePublication=&quot; + datePublication +
+                &quot;, isbn='&quot; + isbn + '\'' +
+                '}';
+    }
+    
+    private boolean isDateNotReasonable(LocalDate date) {
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (date == null) {</span>
+<span class="nc" id="L158">            return true;</span>
+        }
+<span class="fc" id="L160">        int year = date.getYear();</span>
+<span class="fc" id="L161">        int currentYear = LocalDate.now().getYear();</span>
+<span class="fc bfc" id="L162" title="All 4 branches covered.">        return year &lt; 1000 || year &gt; currentYear;</span>
+    }
+    
+    public boolean isAncien() {
+        // Vérifie si le livre est ancien (publié avant 1900)
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        return datePublication.getYear() &lt; 1900;</span>
+    }
+
+}
+
+<span class="fc" id="L172">class Bibliotheque {</span>
+<span class="fc" id="L173">    private List&lt;Livre&gt; livres = new ArrayList&lt;&gt;();</span>
+
+    public void ajouterLivre(Livre livre) {
+<span class="fc" id="L176">        livres.add(livre);</span>
+<span class="fc" id="L177">    }</span>
+
+    public void retirerLivre(Livre livre) {
+<span class="fc" id="L180">        livres.remove(livre);</span>
+<span class="fc" id="L181">    }</span>
+
+    public Livre rechercherParTitre(String titre) {
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        for (Livre livre : livres) {</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (livre.getTitre().equals(titre)) {</span>
+<span class="fc" id="L186">                return livre;</span>
+            }
+<span class="fc" id="L188">        }</span>
+<span class="fc" id="L189">        return null;</span>
+    }
+
+    public Livre rechercherParAuteur(String auteur) {
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        for (Livre livre : livres) {</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            if (livre.getAuteur().equals(auteur)) {</span>
+<span class="fc" id="L195">                return livre;</span>
+            }
+<span class="fc" id="L197">        }</span>
+<span class="fc" id="L198">        return null;</span>
+    }
+
+    public Livre rechercherParISBN(String isbn) {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        for (Livre livre : livres) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            if (livre.getIsbn().equals(isbn)) {</span>
+<span class="fc" id="L204">                return livre;</span>
+            }
+<span class="fc" id="L206">        }</span>
+<span class="fc" id="L207">        return null;</span>
+    }
+
+    public List&lt;Livre&gt; getLivres() {
+<span class="fc" id="L211">        return livres;</span>
+    }
+    
+    public boolean estVide() {
+<span class="fc" id="L215">        return livres.isEmpty();</span>
+    }
+    
+    public int getNombreLivres() {
+<span class="fc" id="L219">        return livres.size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
