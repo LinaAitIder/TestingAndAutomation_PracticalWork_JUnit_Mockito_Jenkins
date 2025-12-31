@@ -7,17 +7,9 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'master', url: 'https://github.com/LinaAitIder/TestingAndAutomation_PracticalWork_JUnit_Mockito_Jenkins.git'
-            }
-        }
-
         stage('Compile') {
             steps {
-                dir('TP3_Jenkins_Pipeline') {
-                    sh 'mvn compile'
-                }
+                sh 'mvn compile'
             }
             post {
                 success {
@@ -31,20 +23,18 @@ pipeline {
 
         stage('Run Unit Tests') {
             steps {
-                dir('TP3_Jenkins_Pipeline') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
             post {
                 always {
-                    junit 'TP3_Jenkins_Pipeline/target/surefire-reports/*.xml'
-                    publishCoverage adapters: [jacocoAdapter('TP3_Jenkins_Pipeline/target/jacoco.exec')]
+                    junit 'target/surefire-reports/*.xml'
+                    publishCoverage adapters: [jacocoAdapter('target/jacoco.exec')]
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
-                        reportDir: 'TP3_Jenkins_Pipeline/target/site/jacoco',
-                        reportFiles: 'TP3_Jenkins_Pipeline/target/site/jacoco/index.html',
+                        reportDir: 'target/site/jacoco',
+                        reportFiles: 'index.html',
                         reportName: 'JaCoCo Coverage Report'
                     ])
                 }
@@ -53,30 +43,26 @@ pipeline {
 
         stage('Static Code Analysis') {
             steps {
-                dir('TP3_Jenkins_Pipeline') {
-                    sh '''
-                        mvn sonar:sonar \
-                        -Dsonar.projectKey=library-management-system \
-                        -Dsonar.sources=src/main \
-                        -Dsonar.tests=src/test \
-                        -Dsonar.java.binaries=target/classes \
-                        -Dsonar.java.test.binaries=target/test-classes \
-                        -Dsonar.junit.reportsPath=target/surefire-reports \
-                        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-                    '''
-                }
+                sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=library-management-system \
+                    -Dsonar.sources=src/main \
+                    -Dsonar.tests=src/test \
+                    -Dsonar.java.binaries=target/classes \
+                    -Dsonar.java.test.binaries=target/test-classes \
+                    -Dsonar.junit.reportsPath=target/surefire-reports \
+                    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                '''
             }
         }
 
         stage('Package') {
             steps {
-                dir('TP3_Jenkins_Pipeline') {
-                    sh 'mvn package -DskipTests'
-                }
+                sh 'mvn package -DskipTests'
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'TP3_Jenkins_Pipeline/target/*.jar', fingerprint: true
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
                 }
             }
         }
@@ -86,9 +72,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                dir('TP3_Jenkins_Pipeline') {
-                    sh 'echo "Deploying to development environment..."'
-                }
+                sh 'echo "Deploying to development environment..."'
             }
         }
     }
