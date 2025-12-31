@@ -10,7 +10,7 @@ pipeline {
         stage('Compile') {
             steps {
                 dir('TP3_Jenkins_Pipeline') {
-                    sh 'mvn compile'
+                    bat 'mvn compile'
                 }
             }
             post {
@@ -26,14 +26,14 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 dir('TP3_Jenkins_Pipeline') {
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
             post {
                 always {
                     junit 'TP3_Jenkins_Pipeline/target/surefire-reports/*.xml'
-                    publishCoverage adapters: [jacocoAdapter('TP3_Jenkins_Pipeline/target/jacoco.exec')]
-                    publishHTML([
+                    publibatCoverage adapters: [jacocoAdapter('TP3_Jenkins_Pipeline/target/jacoco.exec')]
+                    publibatHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
@@ -48,7 +48,7 @@ pipeline {
         stage('Static Code Analysis') {
             steps {
                 dir('TP3_Jenkins_Pipeline') {
-                    sh '''
+                    bat '''
                         mvn sonar:sonar \
                         -Dsonar.projectKey=library-management-system \
                         -Dsonar.sources=src/main \
@@ -65,7 +65,7 @@ pipeline {
         stage('Package') {
             steps {
                 dir('TP3_Jenkins_Pipeline') {
-                    sh 'mvn package -DskipTests'
+                    bat 'mvn package -DskipTests'
                 }
             }
             post {
@@ -81,7 +81,7 @@ pipeline {
             }
             steps {
                 dir('TP3_Jenkins_Pipeline') {
-                    sh 'echo "Deploying to development environment..."'
+                    bat 'echo "Deploying to development environment..."'
                 }
             }
         }
